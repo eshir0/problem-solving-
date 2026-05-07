@@ -20,7 +20,7 @@ jobs:
           echo "Total files: $COUNT"
 
           # README.md 업데이트 (공백에 민감하지 않게 정규표현식 수정)
-          sed -i "s/.*/$COUNT/g" README.md
+          sed -i "s/.*총 풀이 수.*/- **총 풀이 수**: $COUNT/g" README.md
 
       - name: Commit and Push changes
         run: |
