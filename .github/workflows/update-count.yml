@@ -14,13 +14,12 @@ jobs:
 
       - name: Calculate file count and Update README
         run: |
-          # 1. 숫자를 셀 폴더들을 지정합니다.
-          # 아래 예시는 'baekjoon'과 'programmers' 폴더 안의 모든 파일을 셉니다.
-          # 본인의 폴더명에 맞춰 수정하세요. (폴더가 하나면 하나만 써도 됩니다)
-          COUNT=$(find baekjoon programmers -type f 2>/dev/null | wc -l)
-          echo "현재 총 파일 개수: $COUNT"
+          # 한글 폴더명을 인식할 수 있도록 정확히 적어줍니다.
+          # 각 폴더 안의 파일 개수를 합산합니다.
+          COUNT=$(find "백준" "SWEA" "정올" -type f 2>/dev/null | wc -l)
+          echo "Total files: $COUNT"
 
-          # 2. README.md 파일에서 주석 사이의 내용을 업데이트합니다.
+          # README.md 업데이트 (공백에 민감하지 않게 정규표현식 수정)
           sed -i "s/.*/$COUNT/g" README.md
 
       - name: Commit and Push changes
@@ -28,5 +27,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          # 변경사항이 있을 때만 커밋하고 푸시합니다.
           git diff --quiet && git diff --staged --quiet || (git commit -m "docs: 문제 풀이 개수 업데이트 ($COUNT)" && git push)
