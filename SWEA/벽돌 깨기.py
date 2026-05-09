@@ -70,3 +70,65 @@ for T in range(1,int(input())+1):
     dfs(0)
 
     print(f'#{T} {ans}')
+
+# 좀 다른 방식
+from collections import deque
+for T in range(1,int(input())+1):
+    N,W,H = map(int,input().split())
+    m = [list(map(int,input().split())) for i in range(H)]
+
+    ans = 1e9
+
+    dy = [0,0,-1,1]
+    dx = [-1,1,0,0]
+
+    def dfs(n,cp):
+        global ans
+
+        if n == N:
+            a = 0
+            for i in range(H):
+                for j in range(W):
+                    if cp[i][j] > 0:
+                        a += 1
+            ans = min(ans,a)
+            return
+
+        for i in range(W):
+            cp_m = [row[:] for row in cp]
+
+            for j in range(H):
+                if cp_m[j][i] > 0:
+                    q = deque([(j,i,cp_m[j][i])])
+                    cp_m[j][i] = 0
+
+                    while q:
+                        y,x,k = q.popleft()
+                        for d in range(4):
+                            ny,nx = y,x
+
+                            for _ in range(k-1):
+                                ny += dy[d]
+                                nx += dx[d]
+                                if 0 <= ny < H and 0 <= nx < W:
+                                    if cp_m[ny][nx] > 0:
+                                        q.append((ny,nx,cp_m[ny][nx]))
+                                    cp_m[ny][nx] = 0
+                    break
+            for c in range(W):
+                tem = []
+
+                for r in range(H):
+                    if cp_m[r][c] > 0:
+                        tem.append(cp_m[r][c])
+                        cp_m[r][c] = 0
+
+                for r in range(H -1 , -1 , -1):
+                    if tem:
+                        cp_m[r][c] =  tem.pop()
+                    else:
+                        break
+            dfs(n + 1, cp_m)
+
+    dfs(0,m)
+    print(f'#{T} {ans}')
