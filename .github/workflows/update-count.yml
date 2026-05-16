@@ -16,7 +16,7 @@ jobs:
         run: |
           # 한글 폴더명을 인식할 수 있도록 정확히 적어줍니다.
           # 각 폴더 안의 파일 개수를 합산합니다.
-          COUNT=$(find "백준" "SWEA" "정올" "복습" -type f 2>/dev/null | wc -l)
+          COUNT=$(find "백준" "SWEA" "정올" -type f 2>/dev/null | wc -l)
           echo "Total files: $COUNT"
 
           # README.md 업데이트 (공백에 민감하지 않게 정규표현식 수정)
